@@ -17,7 +17,7 @@ const Form = () => {
 				<input
 					type='text'
 					name='name'
-					id='name'
+					// id='name'
 					placeholder='name'
 					onChange={event => saveValues(event, formValues, setFormValues)}
 				/>
@@ -27,7 +27,7 @@ const Form = () => {
 				<input
 					type='text'
 					name='email'
-					id='email'
+					// id='email'
 					placeholder='email'
 					onChange={event => saveValues(event, formValues, setFormValues)}
 				/>
@@ -37,7 +37,7 @@ const Form = () => {
 					<input
 						type='radio'
 						name='gender'
-						id='man'
+						// id='man'
 						value='man'
 						onChange={event => saveValues(event, formValues, setFormValues)}
 					/>
@@ -47,13 +47,14 @@ const Form = () => {
 					<input
 						type='radio'
 						name='gender'
-						id='woman'
+						// id='woman'
 						value='woman'
 						onChange={event => saveValues(event, formValues, setFormValues)}
 					/>
 					Woman
 				</label>
 			</div>
+			<input type='submit' value='Crear' />
 		</StyledForm>
 	);
 };
