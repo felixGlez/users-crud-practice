@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import Form from '../form/Form';
 import UsersContainer from '../users-container/UsersContainer';
 import { StyledContent } from './styles';
+import { URLS } from '../../constants/urls';
 
 const Content = () => {
 	const [users, setUsers] = useState([]);
-	console.log(users);
 
 	useEffect(() => {
 		fetchUsers(setUsers);
@@ -13,14 +13,14 @@ const Content = () => {
 
 	return (
 		<StyledContent>
-			<UsersContainer users={users} />
-			<Form />
+			<UsersContainer users={users} setUsers={setUsers} />
+			<Form setUsers={setUsers} />
 		</StyledContent>
 	);
 };
 
 const fetchUsers = async setUsers => {
-	const response = await fetch('http://localhost:3000/api/users/');
+	const response = await fetch(URLS.USER_API);
 	const data = await response.json();
 	setUsers(data);
 };

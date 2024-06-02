@@ -15,7 +15,7 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json()); // para parsear los datos recibidos automáticamente
 app.use('/api/users', usersRoutes);
 
 // Uso de rutas

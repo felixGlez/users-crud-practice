@@ -1,23 +1,24 @@
 import { useState } from 'react';
 import { StyledForm } from './styles';
+import { postData } from '../../utils/fetchData';
+import { URLS } from '../../constants/urls';
 
-const Form = () => {
+const Form = ({ setUsers }) => {
 	const [formValues, setFormValues] = useState({
 		name: '',
 		email: '',
 		gender: ''
 	});
-	console.log(formValues);
 
 	return (
-		<StyledForm>
+		<StyledForm onSubmit={event => createUser(event, formValues, setUsers)}>
 			<h2>Create User</h2>
 			<div>
 				<label htmlFor='name'>Name</label>
 				<input
 					type='text'
 					name='name'
-					// id='name'
+					id='name'
 					placeholder='name'
 					onChange={event => saveValues(event, formValues, setFormValues)}
 				/>
@@ -27,7 +28,7 @@ const Form = () => {
 				<input
 					type='text'
 					name='email'
-					// id='email'
+					id='email'
 					placeholder='email'
 					onChange={event => saveValues(event, formValues, setFormValues)}
 				/>
@@ -37,7 +38,7 @@ const Form = () => {
 					<input
 						type='radio'
 						name='gender'
-						// id='man'
+						id='man'
 						value='man'
 						onChange={event => saveValues(event, formValues, setFormValues)}
 					/>
@@ -47,7 +48,7 @@ const Form = () => {
 					<input
 						type='radio'
 						name='gender'
-						// id='woman'
+						id='woman'
 						value='woman'
 						onChange={event => saveValues(event, formValues, setFormValues)}
 					/>
@@ -57,6 +58,12 @@ const Form = () => {
 			<input type='submit' value='Crear' />
 		</StyledForm>
 	);
+};
+
+const createUser = async (event, formValues, setUsers) => {
+	event.preventDefault();
+	const updatedUsers = await postData(URLS.USER_API, formValues);
+	setUsers(updatedUsers);
 };
 
 const saveValues = (event, formValues, setFormValues) => {
