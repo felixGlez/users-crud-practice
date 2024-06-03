@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyledForm } from './styles';
-import { postData } from '../../utils/fetchData';
 import { URLS } from '../../constants/urls';
+import { postData } from '../../utils/api';
 
 const Form = ({ setUsers }) => {
 	const [formValues, setFormValues] = useState({
@@ -9,9 +9,12 @@ const Form = ({ setUsers }) => {
 		email: '',
 		gender: ''
 	});
+	console.log(formValues);
 
 	return (
-		<StyledForm onSubmit={event => createUser(event, formValues, setUsers)}>
+		<StyledForm
+			onSubmit={event => createUser(event, formValues, setUsers, setFormValues)}
+		>
 			<h2>Create User</h2>
 			<div>
 				<label htmlFor='name'>Name</label>
@@ -60,10 +63,11 @@ const Form = ({ setUsers }) => {
 	);
 };
 
-const createUser = async (event, formValues, setUsers) => {
+const createUser = async (event, formValues, setUsers, setFormValues) => {
 	event.preventDefault();
 	const updatedUsers = await postData(URLS.USER_API, formValues);
 	setUsers(updatedUsers);
+	event.target.reset();
 };
 
 const saveValues = (event, formValues, setFormValues) => {
