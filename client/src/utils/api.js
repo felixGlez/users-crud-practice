@@ -25,7 +25,7 @@ export const patchData = async (url, body = {}) => {
 	return data;
 };
 
-export const deleteData = async (url) => {
+export const deleteData = async (url, body = {}) => {
 	const data = await fetchData(url, {
 		method: METHODS.DELETE,
 		headers: HEADERS

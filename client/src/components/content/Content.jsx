@@ -3,8 +3,7 @@ import Form from '../form/Form';
 import UsersContainer from '../users-container/UsersContainer';
 import { StyledContent } from './styles';
 import { URLS } from '../../constants/urls';
-import { fetchData } from '../../utils/fetchData';
-import { METHODS } from '../../constants/methods';
+import { getData } from '../../utils/api';
 
 const Content = () => {
 	const [users, setUsers] = useState([]);
@@ -12,6 +11,8 @@ const Content = () => {
 	useEffect(() => {
 		fetchUsers(setUsers);
 	}, []);
+
+	if (users.length === 0) return <h1>LOADING...</h1>;
 
 	return (
 		<StyledContent>
@@ -22,8 +23,12 @@ const Content = () => {
 };
 
 const fetchUsers = async setUsers => {
-	const data = await fetchData(URLS.USER_API, { method: METHODS.GET });
-	setUsers(data);
+	try {
+		const data = await getData(URLS.USER_API);
+		setUsers(data);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 export default Content;
