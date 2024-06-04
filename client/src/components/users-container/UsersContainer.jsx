@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { StyledUser, StyledUsersContainer } from './styles';
 import { URLS } from '../../constants/urls';
-import { deleteData } from '../../utils/api';
+import { deleteData, patchData } from '../../utils/api';
 
 const UsersContainer = ({ users, setUsers }) => {
 	const [editValues, setEditValues] = useState(false);
+	const [updatedUser, setUpdatedUser] = useState({
+		name: '',
+		email: ''
+	})
 
 	return (
 		<StyledUsersContainer>
@@ -12,23 +16,30 @@ const UsersContainer = ({ users, setUsers }) => {
 				<StyledUser key={user.userId}>
 					<p>{user.name}</p>
 					<p>{user.email}</p>
-					{editValues && (
-						<>
-							<input type='text'></input> <input type='text'></input>
-						</>
-					)}
 					<button
-						onClick={() => editUser(editValues, setEditValues, user, setUsers)}
+						onClick={() => handleEditUser(editValues, setEditValues, user, setUsers, updatedUser)}
 					>
-						{!editValues ? 'Editar' : 'Cancelar'}
+						Editar
 					</button>
 
 					<button onClick={() => deleteUser(user, setUsers)}>Eliminar</button>
 				</StyledUser>
 			))}
+								{editValues && (
+						<>
+							<input onChange={(event)=>saveValues(event,updatedUser, setUpdatedUser)} type='text' name='name' id='name' placeholder='Name'></input>
+							<input type='text' name='email' id='email' placeholder='Email' onChange={(event)=>saveValues(event,updatedUser, setUpdatedUser)}></input>
+							<button type='submit'>Guardar</button>
+						</>
+					)}
 		</StyledUsersContainer>
 	);
 };
+
+const saveValues = (event, updatedUser, setUpdatedUser) => {
+	const {name, value} = event.target
+	setUpdatedUser({...updatedUser, [name]: value})
+}
 
 const deleteUser = async (user, setUsers) => {
 	const { userId } = user;
@@ -36,11 +47,13 @@ const deleteUser = async (user, setUsers) => {
 	setUsers(updatedUsers);
 };
 
-const editUser = async (editValues, setEditValues, user, setUsers) => {
+const handleEditUser = async (editValues, setEditValues, user, setUsers, updatedUser) => {
 	setEditValues(!editValues);
-	const { userId } = user;
-	console.log(userId);
-	// const updateUser = await patchData()
+	const { userId, name } = user;
+	console.log(userId, name);
+
+	const updateUser = await patchData(`${URLS.USER_API}/${userId}`, updatedUser)
+	setUsers(updateUser)
 };
 
 export default UsersContainer;
