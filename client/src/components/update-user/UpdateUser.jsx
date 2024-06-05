@@ -4,7 +4,7 @@ import { StyledForm } from '../form/styles';
 
 const UpdateUser = ({ userToEdit, setUsers }) => {
 	return (
-		<StyledForm onSubmit={event => handleSubmit(event, setUsers)}>
+		<StyledForm onSubmit={event => handleSubmit(event, setUsers, userToEdit.userId)}>
 			<div>
 				<label htmlFor='name'>Name</label>
 				<input
@@ -30,21 +30,21 @@ const UpdateUser = ({ userToEdit, setUsers }) => {
 	);
 };
 
-const updateUser = async (user, setUsers) => {
-	const { userId, name, email } = user;
+const updateUser = async (name, email, setUsers, userId) => {
 	const newUser = { name, email };
 	const updatedUsers = await patchData(`${URLS.USER_API}/${userId}`, newUser);
 	setUsers(updatedUsers);
+
 };
 
-const handleSubmit = (event, setUsers) => {
+const handleSubmit = (event, setUsers, userId) => {
 	event.preventDefault();
 	const name = event.target.name.value;
 	const email = event.target.email.value;
-
+	
 	if (!name || !email) return;
-
-	updateUser(name, email, setUsers);
+	
+	updateUser(name, email, setUsers, userId);
 	event.target.reset();
 };
 
