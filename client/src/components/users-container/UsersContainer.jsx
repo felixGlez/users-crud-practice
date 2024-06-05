@@ -17,7 +17,7 @@ const UsersContainer = ({ users, setUsers }) => {
 					<button onClick={() => deleteUser(user, setUsers)}>Eliminar</button>
 				</StyledUser>
 			))}
-			{userToEdit && <UpdateUser userToEdit={userToEdit} setUsers={setUsers} />}
+			{userToEdit && <UpdateUser userToEdit={userToEdit} setUserToEdit={setUserToEdit} setUsers={setUsers} />}
 		</StyledUsersContainer>
 	);
 };

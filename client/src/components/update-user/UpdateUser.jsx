@@ -2,9 +2,9 @@ import { URLS } from '../../constants/urls';
 import { patchData } from '../../utils/api';
 import { StyledForm } from '../form/styles';
 
-const UpdateUser = ({ userToEdit, setUsers }) => {
+const UpdateUser = ({ userToEdit, setUserToEdit, setUsers }) => {
 	return (
-		<StyledForm onSubmit={event => handleSubmit(event, setUsers, userToEdit.userId)}>
+		<StyledForm onSubmit={event => handleSubmit(event, setUsers, userToEdit.userId, setUserToEdit)}>
 			<div>
 				<label htmlFor='name'>Name</label>
 				<input
@@ -30,21 +30,22 @@ const UpdateUser = ({ userToEdit, setUsers }) => {
 	);
 };
 
-const updateUser = async (name, email, setUsers, userId) => {
+const updateUser = async (name, email, setUsers, userId, setUserToEdit) => {
 	const newUser = { name, email };
 	const updatedUsers = await patchData(`${URLS.USER_API}/${userId}`, newUser);
 	setUsers(updatedUsers);
+	setUserToEdit()
 
 };
 
-const handleSubmit = (event, setUsers, userId) => {
+const handleSubmit = (event, setUsers, userId, setUserToEdit) => {
 	event.preventDefault();
 	const name = event.target.name.value;
 	const email = event.target.email.value;
 	
 	if (!name || !email) return;
 	
-	updateUser(name, email, setUsers, userId);
+	updateUser(name, email, setUsers, userId, setUserToEdit);
 	event.target.reset();
 };
 
