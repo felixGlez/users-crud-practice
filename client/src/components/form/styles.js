@@ -5,6 +5,14 @@ const StyledForm = styled.form`
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	opacity: 0;
+	animation: appear 2s forwards;
+
+	@keyframes appear {
+		to {
+			opacity: 1;
+		}
+	}
 `;
 
 export { StyledForm };
